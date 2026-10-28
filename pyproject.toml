@@ -1,0 +1,57 @@
+[project]
+name = "retail-pipeline"
+version = "0.1.0"
+description = "On-premises ETL pipeline and analytics for a European online retail company"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mlxtend>=0.23",
+    "openpyxl>=3.1",
+    "pandas>=2.2",
+]
+
+[project.scripts]
+retail-etl = "retail_pipeline.pipeline:main"
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29",
+    "nbclient>=0.10",
+    "pandas-stubs>=3.0.5.260914",
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 88          # black default
+target-version = "py312"
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",  # pycodestyle
+    "F",       # pyflakes
+    "I",       # isort
+    "B",       # flake8-bugbear
+    "UP",      # pyupgrade
+    "SIM",     # flake8-simplify
+    "PD",      # pandas-vet
+]
+ignore = ["PD010"]  # groupby().unstack() is the clearest way to build the basket
+
+[tool.ruff.lint.isort]
+known-first-party = ["retail_pipeline"]
+
+[tool.ruff.format]
+quote-style = "double"    # black-compatible formatting
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
