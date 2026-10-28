@@ -1,0 +1,3 @@
+# Count the project as Python on GitHub: the notebook's embedded outputs
+# would otherwise dominate the language statistics.
+*.ipynb linguist-detectable=false

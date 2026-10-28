@@ -189,3 +189,7 @@ The test suite covers:
 | [Data architecture](docs/architecture.md) | Layers, data flow, cleaning strategy, technology stack and implementation status |
 | [Data warehouse schema](docs/data_warehouse.md) | Star schema, ERD, design decisions and the `mart.sales_invoice` view |
 | [Infrastructure requirements](docs/infrastructure.md) | Requirements per stage, hardware sizing, security, backup and disaster recovery |
+
+## License
+
+Released under the [MIT License](LICENSE).
