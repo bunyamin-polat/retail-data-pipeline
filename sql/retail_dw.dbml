@@ -1,0 +1,86 @@
+// Online Retail Data Warehouse — paste into https://dbdiagram.io to render the ERD
+
+Project online_retail_dw {
+  database_type: 'PostgreSQL'
+  Note: 'Star schema: fact_sales (invoice lines) + customer, product (inventory), seller, country, date dimensions'
+}
+
+Table dw.dim_customer {
+  customer_key integer [pk, increment]
+  customer_id integer [unique, note: 'CustomerID; NULL = unknown (key -1)']
+  customer_name varchar(100)
+  email varchar(150)
+  first_purchase_date date
+  created_at timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  Note: 'Customer information'
+}
+
+Table dw.dim_product {
+  product_key integer [pk, increment]
+  stock_code varchar(20) [not null, unique, note: 'StockCode']
+  description varchar(255) [note: 'Description']
+  category varchar(100)
+  stock_quantity integer
+  reorder_level integer
+  is_non_product boolean [not null, default: false]
+  updated_at timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  Note: 'Inventory information'
+}
+
+Table dw.dim_seller {
+  seller_key integer [pk, increment]
+  seller_name varchar(100) [not null]
+  channel varchar(50)
+  country varchar(50)
+  Note: 'Seller information'
+}
+
+Table dw.dim_country {
+  country_key integer [pk, increment]
+  country_name varchar(50) [not null, unique, note: 'Country']
+  region varchar(50)
+}
+
+Table dw.dim_date {
+  date_key integer [pk, note: 'YYYYMMDD']
+  full_date date [not null, unique]
+  year smallint [not null]
+  quarter smallint [not null]
+  month smallint [not null]
+  month_name varchar(10) [not null]
+  day smallint [not null]
+  day_of_week smallint [not null]
+  day_name varchar(10) [not null]
+  is_weekend boolean [not null]
+}
+
+Table dw.fact_sales {
+  sales_key bigint [pk, increment]
+  invoice_no varchar(10) [not null, note: 'InvoiceNo']
+  invoice_datetime timestamp [not null, note: 'InvoiceDate']
+  date_key integer [not null]
+  customer_key integer [not null]
+  product_key integer [not null]
+  seller_key integer [not null, default: 1]
+  country_key integer [not null]
+  quantity integer [not null, note: 'Quantity']
+  unit_price numeric(10,2) [not null, note: 'UnitPrice']
+  line_total numeric(12,2) [note: 'quantity * unit_price']
+  is_cancelled boolean [not null, default: false]
+  loaded_at timestamp [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    invoice_no
+    date_key
+    customer_key
+    product_key
+    country_key
+  }
+  Note: 'Transaction invoice information — one row per invoice line'
+}
+
+Ref: dw.fact_sales.date_key > dw.dim_date.date_key
+Ref: dw.fact_sales.customer_key > dw.dim_customer.customer_key
+Ref: dw.fact_sales.product_key > dw.dim_product.product_key
+Ref: dw.fact_sales.seller_key > dw.dim_seller.seller_key
+Ref: dw.fact_sales.country_key > dw.dim_country.country_key
