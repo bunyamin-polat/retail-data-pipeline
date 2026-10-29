@@ -1,5 +1,8 @@
 # Retail Data Pipeline
 
+[![CI](https://github.com/bunyamin-polat/retail-data-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/bunyamin-polat/retail-data-pipeline/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 An end-to-end, **on-premises** data platform for a European online retailer. The repository contains:
 
 - the target data architecture, warehouse schema and infrastructure requirements;
@@ -172,8 +175,10 @@ uv run pytest                 # test suite
 uv run ruff check .           # lint, including import order
 uv run ruff check . --fix     # apply automatic fixes
 uv run ruff format .          # format (black-compatible)
-uvx pyright src tests         # static type check (uses pandas-stubs)
+uv run pyright src tests      # static type check (uses pandas-stubs)
 ```
+
+The same four checks run in [GitHub Actions](.github/workflows/ci.yml) on every push to `main` and on every pull request.
 
 The test suite covers:
 

@@ -1,6 +1,6 @@
 # Infrastructure Requirements — On-Premises Data Platform
 
-> **Scope.** This document lists the infrastructure required to run the **target** architecture described in [architecture.md](architecture.md) in production. The current release of the pipeline needs only one machine with Python 3.12, because SQLite stands in for the warehouse.
+> **Scope.** This document lists the infrastructure required to run the **target** architecture described in [architecture.md](architecture.md) in production. **None of it is deployed.** All figures in this document are **design targets and planning assumptions**, not measurements: user counts, data growth, hardware sizing, RPO/RTO and retention periods. They should be validated with the company before procurement. The current release of the pipeline needs only one machine with Python 3.12, because SQLite stands in for the warehouse.
 
 ## 1. Constraints and Assumptions
 
@@ -89,7 +89,7 @@ Each stage below matches a step in the data architecture ([architecture.md](arch
   - Documentation: a data dictionary and an onboarding guide.
 - **Infrastructure:** Prometheus and Grafana; a Git repository for code, migrations and documentation.
 
-## 3. Data Volume and Growth Estimate
+## 3. Data Volume and Growth (Planning Estimate)
 
 | Item | Current | Planning basis (5 years) |
 | --- | --- | --- |
@@ -100,7 +100,7 @@ Each stage below matches a step in the data architecture ([architecture.md](arch
 
 The data volume is small, so the hardware is sized for **reliability, concurrency and growth headroom**, not raw volume. Storage needs are dominated by backups and logs.
 
-## 4. Server Roles and Hardware
+## 4. Server Roles and Hardware (Design Target)
 
 | # | Server | Role | CPU | RAM | Storage |
 | --- | --- | --- | --- | --- | --- |
@@ -137,7 +137,7 @@ The data volume is small, so the hardware is sized for **reliability, concurrenc
 - **Encryption:** TLS for all database and BI connections; disk encryption (LUKS) on the database and backup servers.
 - **GDPR:** customer identifiers are restricted to authorised roles, every access is logged with `pgaudit`, and the company has a documented data-retention policy.
 
-## 7. Backup, Availability and Disaster Recovery
+## 7. Backup, Availability and Disaster Recovery (Design Target)
 
 | Requirement | Solution |
 | --- | --- |
